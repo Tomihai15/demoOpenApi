@@ -44,20 +44,293 @@
           }
         },
         "responses": {}
+      },
+
+    },
+    
+    "/beverages/{id}": {
+
+      "get": {
+        "responses": {
+          
+        }
+      },
+
+      "put": {
+        "responses": {
+
+        }
+      },
+
+      "patch": {
+        "responses": {
+
+        }
+      },
+      
+      "delete": {
+        "responses": {
+
+        }
+      }
+    },
+    
+    "/labels": {
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "post": {
+        "responses": {
+
+        }
+      }
+    },
+
+    "/labels/{id}": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "put": {
+        "responses": {
+
+        }
+      },
+
+      "patch": {
+        "responses": {
+
+        }
+      },
+
+      "delete": {
+        "responses": {
+
+        }
       }
 
     },
-    "/beverages/{id}": {},
-    "/labels": {},
-    "/labels/{id}": {},
-    "/brands": {},
-    "/brands/{id}": {},
-    "/recepients": {},
-    "/recepients/{id}": {},
-    "/units": {},
-    "/units/{id}": {},
-    "/ingredients/{id}": {},
-    "/ingredient/{id}": {}
+
+    "/brands": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "post": {
+        "responses": {
+
+        }
+      }
+    },
+
+    "/brands/{id}": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "put": {
+        "responses": {
+
+        }
+      },
+
+      "patch": {
+        "responses": {
+
+        }
+      },
+
+      "delete": {
+        "responses": {
+
+        }
+      }
+
+    },
+
+    "/containers": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "post": {
+        "responses": {
+
+        }
+      }
+    },
+
+    "/containers/{id}": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "put": {
+        "responses": {
+
+        }
+      },
+
+      "patch": {
+        "responses": {
+
+        }
+      },
+
+      "delete": {
+        "responses": {
+
+        }
+      }
+
+    },
+
+    "/units": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "post": {
+        "responses": {
+
+        }
+      },
+
+    },
+
+    "/units/{id}": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "put": {
+        "responses": {
+
+        }
+      },
+
+      "patch": {
+        "responses": {
+
+        }
+      },
+
+      "delete": {
+        "responses": {
+
+        }
+      }
+    },
+
+    "/beverage/ingredients": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "post": {
+        "responses": {
+
+        }
+      }
+    },
+
+    "/beverage/ingredients/{id}": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "put": {
+        "responses": {
+
+        }
+      },
+
+      "patch": {
+        "responses": {
+
+        }
+      },
+
+      "delete": {
+        "responses": {
+
+        }
+      }
+
+    },
+
+    "/ingredients/": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "post": {
+        "responses": {
+
+        }
+      }
+    },
+
+    "/ingredients/{id}": {
+
+      "get": {
+        "responses": {
+
+        }
+      },
+
+      "put": {
+        "responses": {
+
+        }
+      },
+
+      "patch": {
+        "responses": {
+
+        }
+      },
+
+      "delete": {
+        "responses": {
+
+        }
+      }
+
+    }
   },
 
   "components": {
