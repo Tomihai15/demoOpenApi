@@ -21,6 +21,138 @@
     }
   ],
   "paths": {
+    "/user/login": {
+      "post": {
+        "description": "Verifies if the user credentials are valid. If positive, it creates and returns a JWT",
+        "operationId": "userLogin",
+        "requestBody": {
+          "description": "User Credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userLoginDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token for authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message explaining the problem"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalidData": {
+                    "summary": "Invalid data provided",
+                    "value": {
+                      "error": "Invalid email or password format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Authentication failed"
+                    }
+                  }
+                },
+                "examples": {
+                  "unauthorized": {
+                    "summary": "Invalid credentials",
+                    "value": {
+                      "error": "Invalid username or password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message explaining why access is forbidden"
+                    }
+                  }
+                },
+                "examples": {
+                  "forbiddenAccess": {
+                    "summary": "Access to the resource is forbidden",
+                    "value": {
+                      "error": "You do not have permission to access this resource"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message indicating a server-side failure"
+                    }
+                  }
+                },
+                "examples": {
+                  "serverError": {
+                    "summary": "Unexpected server error",
+                    "value": {
+                      "error": "An unexpected error occurred on the server"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     "/beverages": {
       "get": {
         "description": "",
@@ -335,6 +467,22 @@
 
   "components": {
     "schemas": {
+      "userLoginDTO": {
+        "type": "object",
+        "required": [
+          "email", "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
       "Beverage": {
         "allOf": [
           {
@@ -362,23 +510,8 @@
         "properties": {
 
         }
-      },
-      "Error": {
-        "type": "object",
-        "required": [
-          "code",
-          "message"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
       }
+
     }
   }
 }
