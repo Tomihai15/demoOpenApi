@@ -1,0 +1,64 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Drinks Distributor",
+    "description": "A sample API that uses a drinks distributor as an example to demonstrate features in the OpenAPI 3.0 specification",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "name": "MISS2",
+      "email": "miss@example.com",
+      "url": "http://localhost:8080"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://drinks.swagger.io/v2"
+    }
+  ],
+  "paths": {
+    "/beverages": {
+      "get": {
+        "description": "",
+        "operationId": "",
+        "parameters": [],
+        "responses": {}
+      },
+
+      "post": {
+        "description": "",
+        "operationId": "",
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": ""
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+
+    },
+    "/beverages/nonalcooholic": {},
+    "/beverages/alchooholic": {},
+    "/beverages/{id}": {},
+    "/labels": {},
+    "/labels/{id}": {},
+    "/brands": {},
+    "/brands/{id}": {},
+    "/recepients": {},
+    "/recepients/{id}": {},
+    "/units": {},
+    "/units/{id}": {},
+    "/ingredients/{id}": {},
+    "/ingredient/{id}": {}
+  }
+}
