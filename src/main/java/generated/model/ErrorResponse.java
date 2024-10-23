@@ -3,41 +3,41 @@ package generated.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import generated.model.NewPet;
+import generated.model.ErrorResponseError;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Pet
+ * ErrorResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-20T22:24:29.915605900+03:00[Europe/Bucharest]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-23T22:33:10.071138600+03:00[Europe/Bucharest]")
 
 
-public class Pet extends NewPet  {
-  @JsonProperty("id")
-  private Long id = null;
+public class ErrorResponse   {
+  @JsonProperty("error")
+  private ErrorResponseError error = null;
 
-  public Pet id(Long id) {
-    this.id = id;
+  public ErrorResponse error(ErrorResponseError error) {
+    this.error = error;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get error
+   * @return error
    **/
-  @Schema(required = true, description = "")
-      @NotNull
-
-    public Long getId() {
-    return id;
+  @Schema(description = "")
+  
+    @Valid
+    public ErrorResponseError getError() {
+    return error;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setError(ErrorResponseError error) {
+    this.error = error;
   }
 
 
@@ -49,22 +49,21 @@ public class Pet extends NewPet  {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Pet pet = (Pet) o;
-    return Objects.equals(this.id, pet.id) &&
-        super.equals(o);
+    ErrorResponse errorResponse = (ErrorResponse) o;
+    return Objects.equals(this.error, errorResponse.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, super.hashCode());
+    return Objects.hash(error);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Pet {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class ErrorResponse {\n");
+    
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     sb.append("}");
     return sb.toString();
   }

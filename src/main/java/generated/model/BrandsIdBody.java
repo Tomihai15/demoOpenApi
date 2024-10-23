@@ -9,20 +9,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * NewPet
+ * BrandsIdBody
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-20T22:24:29.915605900+03:00[Europe/Bucharest]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-23T22:33:10.071138600+03:00[Europe/Bucharest]")
 
 
-public class NewPet   {
+public class BrandsIdBody   {
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("tag")
-  private String tag = null;
+  @JsonProperty("description")
+  private String description = null;
 
-  public NewPet name(String name) {
+  public BrandsIdBody name(String name) {
     this.name = name;
     return this;
   }
@@ -42,23 +42,23 @@ public class NewPet   {
     this.name = name;
   }
 
-  public NewPet tag(String tag) {
-    this.tag = tag;
+  public BrandsIdBody description(String description) {
+    this.description = description;
     return this;
   }
 
   /**
-   * Get tag
-   * @return tag
+   * Get description
+   * @return description
    **/
   @Schema(description = "")
   
-    public String getTag() {
-    return tag;
+    public String getDescription() {
+    return description;
   }
 
-  public void setTag(String tag) {
-    this.tag = tag;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
 
@@ -70,23 +70,23 @@ public class NewPet   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    NewPet newPet = (NewPet) o;
-    return Objects.equals(this.name, newPet.name) &&
-        Objects.equals(this.tag, newPet.tag);
+    BrandsIdBody brandsIdBody = (BrandsIdBody) o;
+    return Objects.equals(this.name, brandsIdBody.name) &&
+        Objects.equals(this.description, brandsIdBody.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, tag);
+    return Objects.hash(name, description);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class NewPet {\n");
+    sb.append("class BrandsIdBody {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("}");
     return sb.toString();
   }
