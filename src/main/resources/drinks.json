@@ -784,13 +784,172 @@
     "/brands": {
 
       "get": {
+        "tags": ["brand"],
+        "summary": "Returns a list of all brands",
+        "operationId": "getBrands",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+
+        ],
         "responses": {
 
+          "200": {
+            "description": "List of brands",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Brand"
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request"
+          },
+
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       },
-
       "post": {
+        "tags": ["brand"],
+        "summary": "Creates a new Brand",
+        "operationId": "createBrand",
+        "requestBody": {
+          "description": "New brands details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewBrand"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
+          "201": {
+            "description": "Brand created successfully",
+            "headers": {
+              "Location": {
+                "description": "URL of the newly created brand",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["brand"],
+        "summary": "Create or replace a brand",
+        "operationId": "putBrand",
+        "requestBody": {
+          "description": "Brand to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Brand"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+
+          "200": {
+            "description": "Beverages updated successfully"
+          },
+
+          "201": {
+            "description": "Beverage created successfully",
+            "headers": {
+              "Location": {
+                "description": "URL of the newly created beverage",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request"
+          },
+
+          "401": {
+            "description": "Unauthorized access"
+          },
+
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
 
         }
       }
@@ -799,26 +958,151 @@
     "/brands/{id}": {
 
       "get": {
+        "tags": ["brand"],
+        "summary": "Returns a brand by its ID",
+        "operationId": "getBrandById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the brand to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "responses": {
-
+          "200": {
+            "description": "Brand found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       },
-
-      "put": {
-        "responses": {
-
-        }
-      },
-
       "patch": {
+        "tags": ["brand"],
+        "summary": "Partially updates an existing brand",
+        "operationId": "patchBrand",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the brand to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Partial brand details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewBrand"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
-
+          "200": {
+            "description": "Brand updated successfully"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       },
-
       "delete": {
+        "tags": ["brand"],
+        "summary": "Deletes an existing brand",
+        "operationId": "deleteBrand",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the brand to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
-
+          "200": {
+            "description": "Brand deleted successfully"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       }
 
@@ -827,16 +1111,176 @@
     "/containers": {
 
       "get": {
+        "tags": ["container"],
+        "summary": "Returns a list of all container",
+        "operationId": "getContainers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+
+        ],
         "responses": {
+
+          "200": {
+            "description": "List of containers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Container"
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request"
+          },
+
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["container"],
+        "summary": "Creates a new container",
+        "operationId": "createContainer",
+        "requestBody": {
+          "description": "New container details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewContainer"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Container created successfully",
+            "headers": {
+              "Location": {
+                "description": "URL of the newly created container",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["container"],
+        "summary": "Create or replace a container",
+        "operationId": "putContainer",
+        "requestBody": {
+          "description": "Container to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Container"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+
+          "200": {
+            "description": "Container updated successfully"
+          },
+
+          "201": {
+            "description": "Container created successfully",
+            "headers": {
+              "Location": {
+                "description": "URL of the newly created container",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Invalid request"
+          },
+
+          "401": {
+            "description": "Unauthorized access"
+          },
+
+          "default": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
 
         }
       },
 
-      "post": {
-        "responses": {
-
-        }
-      }
     },
 
     "/containers/{id}": {
@@ -1063,6 +1507,62 @@
         ]
       },
       "NewLabel": {
+        "type": "object",
+        "required": [
+
+        ],
+        "properties": {
+
+        }
+      },
+      "Brand": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NewBrand"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
+      "NewBrand": {
+        "type": "object",
+        "required": [
+
+        ],
+        "properties": {
+
+        }
+      },
+      "Container": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NewContainer"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
+      "NewContainer": {
         "type": "object",
         "required": [
 

@@ -15,37 +15,9 @@
       "BearerAuth": []
     }
   ],
-  "tags": [
-    {
-      "name": "beverage",
-      "description": "Operations related to beverages"
-    },
-    {
-      "name": "label",
-      "description": "Operations related to labels"
-    },
-    {
-      "name": "brand",
-      "description": "Operations related to brands"
-    },
-    {
-      "name": "container-type",
-      "description": "Operations related to container types"
-    },
-    {
-      "name": "unit-measure",
-      "description": "Operations related to unit measures"
-    },
-    {
-      "name": "ingredient",
-      "description": "Operations related to ingredients"
-    }
-  ],
-
   "paths": {
     "/beverages": {
       "get": {
-        "tags": ["beverage"],
         "summary": "Retrieve all beverages",
         "description": "Retrieves a list of all beverages.",
         "operationId": "getBeverages",
@@ -108,7 +80,6 @@
         }
       },
       "post": {
-        "tags": ["beverage"],
         "summary": "Create a new beverage",
         "description": "Creates a new beverage.",
         "operationId": "createBeverage",
@@ -199,7 +170,6 @@
     },
     "/beverages/{id}": {
       "get": {
-        "tags": ["beverage"],
         "summary": "Retrieve a beverage by ID",
         "description": "Retrieves details of a specific beverage.",
         "operationId": "getBeverageById",
@@ -240,7 +210,6 @@
         }
       },
       "put": {
-        "tags": ["beverage"],
         "summary": "Update a beverage",
         "description": "Updates an existing beverage.",
         "operationId": "updateBeverage",
@@ -337,7 +306,6 @@
         }
       },
       "delete": {
-        "tags": ["beverage"],
         "summary": "Delete a beverage",
         "description": "Deletes a beverage.",
         "operationId": "deleteBeverage",
@@ -371,310 +339,8 @@
         }
       }
     },
-    "/brand": {
-      "get": {
-        "tags": ["brand"],
-        "summary": "Retrieve all brand",
-        "description": "Retrieves a list of all brands.",
-        "operationId": "getBrands",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "type": "integer",
-              "default": 1,
-              "minimum": 1
-            },
-            "description": "Page number."
-          },
-          {
-            "in": "query",
-            "name": "per_page",
-            "schema": {
-              "type": "integer",
-              "default": 10,
-              "minimum": 1,
-              "maximum": 50
-            },
-            "description": "Number of items per page."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A list of brands.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "brands": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Brand"
-                      }
-                    },
-                    "links": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/HateoasLink"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          }
-        }
-      },
-      "post": {
-        "tags": ["brand"],
-        "summary": "Create a new brand",
-        "description": "Creates a new brand.",
-        "operationId": "createBrand",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "name"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Brand created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "links": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/HateoasLink"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequestError"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          }
-        }
-      }
-    },
-    "/brand/{id}": {
-      "get": {
-        "tags": ["brand"],
-        "summary": "Retrieve a brand by ID",
-        "description": "Retrieves details of a specific brand.",
-        "operationId": "getBrandById",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true,
-            "description": "Unique identifier for the brand."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Brand details.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Brand"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFoundError"
-          }
-        }
-      },
-      "put": {
-        "tags": ["brand"],
-        "summary": "Update a brand",
-        "description": "Create or replace an existing brand.",
-        "operationId": "updateBrand",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true,
-            "description": "Unique identifier for the brand."
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Brand updated successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "links": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/HateoasLink"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Brand created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "links": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/HateoasLink"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequestError"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFoundError"
-          }
-        }
-      },
-      "delete": {
-        "tags": ["brand"],
-        "summary": "Delete a brand",
-        "description": "Deletes a brand.",
-        "operationId": "deleteBrand",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true,
-            "description": "Unique identifier for the brand."
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Brand deleted successfully."
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFoundError"
-          }
-        }
-      }
-    },
-
     "/labels": {
       "get": {
-        "tags": ["label"],
         "summary": "Retrieve all labels",
         "description": "Retrieves a list of all labels.",
         "operationId": "getLabels",
@@ -714,7 +380,6 @@
         }
       },
       "post": {
-        "tags": ["label"],
         "summary": "Create a new label",
         "description": "Creates a new label.",
         "operationId": "createLabel",
@@ -778,7 +443,6 @@
     },
     "/labels/{id}": {
       "get": {
-        "tags": ["label"],
         "summary": "Retrieve a label by ID",
         "description": "Retrieves details of a specific label.",
         "operationId": "getLabelById",
@@ -819,7 +483,6 @@
         }
       },
       "put": {
-        "tags": ["label"],
         "summary": "Update a label",
         "description": "Updates an existing label.",
         "operationId": "updateLabel",
@@ -893,7 +556,6 @@
         }
       },
       "delete": {
-        "tags": ["label"],
         "summary": "Delete a label",
         "description": "Deletes a label.",
         "operationId": "deleteLabel",
@@ -929,7 +591,6 @@
     },
     "/ingredients": {
       "get": {
-        "tags": ["ingredient"],
         "summary": "Retrieve all ingredients",
         "description": "Retrieves a list of all ingredients.",
         "operationId": "getIngredients",
@@ -969,7 +630,6 @@
         }
       },
       "post": {
-        "tags": ["ingredient"],
         "summary": "Create a new ingredient",
         "description": "Creates a new ingredient.",
         "operationId": "createIngredient",
@@ -1033,7 +693,6 @@
     },
     "/ingredients/{id}": {
       "get": {
-        "tags": ["ingredient"],
         "summary": "Retrieve an ingredient by ID",
         "description": "Retrieves details of a specific ingredient.",
         "operationId": "getIngredientById",
@@ -1074,7 +733,6 @@
         }
       },
       "put": {
-        "tags": ["ingredient"],
         "summary": "Update an ingredient",
         "description": "Updates an existing ingredient.",
         "operationId": "updateIngredient",
@@ -1148,7 +806,6 @@
         }
       },
       "delete": {
-        "tags": ["ingredient"],
         "summary": "Delete an ingredient",
         "description": "Deletes an ingredient.",
         "operationId": "deleteIngredient",
@@ -1184,7 +841,6 @@
     },
     "/container-types": {
       "get": {
-        "tags": ["container-type"],
         "summary": "Retrieve all container types",
         "description": "Retrieves a list of all container types.",
         "operationId": "getContainerTypes",
@@ -1224,7 +880,6 @@
         }
       },
       "post": {
-        "tags": ["container-type"],
         "summary": "Create a new container type",
         "description": "Creates a new container type.",
         "operationId": "createContainerType",
@@ -1290,7 +945,6 @@
     },
     "/container-types/{id}": {
       "get": {
-        "tags": ["container-type"],
         "summary": "Retrieve a container type by ID",
         "description": "Retrieves details of a specific container type.",
         "operationId": "getContainerTypeById",
@@ -1331,7 +985,6 @@
         }
       },
       "put": {
-        "tags": ["container-type"],
         "summary": "Update a container type",
         "description": "Updates an existing container type.",
         "operationId": "updateContainerType",
@@ -1406,7 +1059,6 @@
         }
       },
       "delete": {
-        "tags": ["container-type"],
         "summary": "Delete a container type",
         "description": "Deletes a container type.",
         "operationId": "deleteContainerType",
@@ -1442,7 +1094,6 @@
     },
     "/unit-measures": {
       "get": {
-        "tags": ["unit-measure"],
         "summary": "Retrieve all unit measures",
         "description": "Retrieves a list of all unit measures.",
         "operationId": "getUnitMeasures",
@@ -1482,7 +1133,6 @@
         }
       },
       "post": {
-        "tags": ["unit-measure"],
         "summary": "Create a new unit measure",
         "description": "Creates a new unit measure.",
         "operationId": "createUnitMeasure",
@@ -1546,7 +1196,6 @@
     },
     "/unit-measures/{id}": {
       "get": {
-        "tags": ["unit-measure"],
         "summary": "Retrieve a unit measure by ID",
         "description": "Retrieves details of a specific unit measure.",
         "operationId": "getUnitMeasureById",
@@ -1587,7 +1236,6 @@
         }
       },
       "put": {
-        "tags": ["unit-measure"],
         "summary": "Update a unit measure",
         "description": "Updates an existing unit measure.",
         "operationId": "updateUnitMeasure",
@@ -1661,7 +1309,6 @@
         }
       },
       "delete": {
-        "tags": ["unit-measure"],
         "summary": "Delete a unit measure",
         "description": "Deletes a unit measure.",
         "operationId": "deleteUnitMeasure",
@@ -1717,10 +1364,6 @@
             "type": "string",
             "description": "Name of the beverage."
           },
-          "brandId": {
-            "type": "integer",
-            "description": "ID of the brand associated with the beverage"
-          },
           "description": {
             "type": "string",
             "description": "Detailed description of the beverage."
@@ -1763,30 +1406,11 @@
         "required": [
           "id",
           "name",
-          "brandId",
           "price",
           "label_id",
           "container_type_id",
           "unit_measure_id"
         ]
-      },
-      "Brand": {
-        "type": "object",
-        "properties": {
-          "brandId": {
-            "type": "integer",
-            "description": "Unique identifier for the brand"
-          },
-          "brandName": {
-            "type": "string",
-            "description": "Name of the brand"
-          },
-          "brandDescription": {
-            "type": "string",
-            "description": "Description of the brand"
-          }
-        },
-        "required": ["brandId", "brandName"]
       },
       "Label": {
         "type": "object",
