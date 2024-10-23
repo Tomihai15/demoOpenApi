@@ -44,7 +44,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-23T22:33:10.071138600+03:00[Europe/Bucharest]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-23T23:06:47.905007700+03:00[Europe/Bucharest]")
 @RestController
 public class BeveragesApiController implements BeveragesApi {
 
@@ -74,7 +74,7 @@ public class BeveragesApiController implements BeveragesApi {
         return new ResponseEntity<InlineResponse201>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<InlineResponse201> createLabel(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody IdLabelsBody body) {
+    public ResponseEntity<InlineResponse201> createLabel(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the beverages.", required=true, schema=@Schema()) @PathVariable("id") UUID id,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody IdLabelsBody body) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
@@ -142,7 +142,7 @@ public class BeveragesApiController implements BeveragesApi {
         return new ResponseEntity<Label>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<InlineResponse2001> getLabels() {
+    public ResponseEntity<InlineResponse2001> getLabels(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the beverages.", required=true, schema=@Schema()) @PathVariable("id") UUID id) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {

@@ -530,6 +530,18 @@
       }
     },
     "/beverages/{id}/labels": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true,
+          "description": "Unique identifier for the beverages."
+        }
+      ],
       "get": {
         "tags": [
           "label"

@@ -44,7 +44,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-23T22:33:10.071138600+03:00[Europe/Bucharest]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-23T23:06:47.905007700+03:00[Europe/Bucharest]")
 @Validated
 public interface BeveragesApi {
 
@@ -81,7 +81,7 @@ public interface BeveragesApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<InlineResponse201> createLabel(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody IdLabelsBody body);
+    ResponseEntity<InlineResponse201> createLabel(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the beverages.", required=true, schema=@Schema()) @PathVariable("id") UUID id, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody IdLabelsBody body);
 
 
     @Operation(summary = "Delete a beverage", description = "Deletes a beverage.", security = {
@@ -169,7 +169,7 @@ public interface BeveragesApi {
     @RequestMapping(value = "/beverages/{id}/labels",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<InlineResponse2001> getLabels();
+    ResponseEntity<InlineResponse2001> getLabels(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the beverages.", required=true, schema=@Schema()) @PathVariable("id") UUID id);
 
 
     @Operation(summary = "Update a beverage", description = "Create or Replace an existing beverage.", security = {
