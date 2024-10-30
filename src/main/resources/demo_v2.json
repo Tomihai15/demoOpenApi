@@ -1627,8 +1627,8 @@
           "container-type"
         ],
         "summary": "Update a container type",
-        "description": "Updates an existing container type.",
-        "operationId": "updateContainerType",
+        "description": "Create or replace a container type.",
+        "operationId": "putContainerType",
         "security": [
           {
             "BearerAuth": [
@@ -1842,8 +1842,9 @@
             "description": "Unique identifier for the beverage."
           },
           "brandId": {
-            "type": "integer",
-            "description": "ID of the brand associated with the beverage"
+            "type": "string",
+            "description": "ID of the brand associated with the beverage",
+            "format": "uuid"
           },
           "description": {
             "type": "string",
@@ -1879,8 +1880,9 @@
         "type": "object",
         "properties": {
           "brandId": {
-            "type": "integer",
-            "description": "Unique identifier for the brand"
+            "type": "string",
+            "description": "Unique identifier for the brand",
+            "format": "uuid"
           },
           "brandName": {
             "type": "string",
