@@ -1,0 +1,1888 @@
+openapi: 3.0.0
+info:
+  title: Beverage E-commerce API
+  description: "API for managing beverages, labels, ingredients, container types,\
+    \ and unit measures in a beverage e-commerce platform."
+  version: 1.0.0
+servers:
+- url: http://127.0.0.1:8080
+  description: Local development server
+security:
+- BearerAuth:
+  - read:beverages
+  - write:beverages
+  - read:brands
+  - write:brands
+  - read:labels
+  - write:labels
+  - read:ingredients
+  - write:ingredients
+  - read:container-types
+  - write:container-types
+tags:
+- name: beverage
+  description: Operations related to beverages
+- name: label
+  description: Operations related to labels
+- name: brand
+  description: Operations related to brands
+- name: container-type
+  description: Operations related to container types
+- name: ingredient
+  description: Operations related to ingredients
+paths:
+  /beverages:
+    get:
+      tags:
+      - beverage
+      summary: Retrieve all beverages
+      description: Retrieves a list of all beverages.
+      operationId: get_beverages
+      parameters:
+      - name: page
+        in: query
+        description: Page number.
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of items per page.
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 5
+          type: integer
+          default: 10
+      responses:
+        "200":
+          description: A list of beverages.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "204":
+          description: No beverages found.
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:beverages
+      x-openapi-router-controller: swagger_server.controllers.beverage_controller
+    post:
+      tags:
+      - beverage
+      summary: Create a new beverage
+      description: Creates a new beverage.
+      operationId: create_beverage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/beverages_body'
+        required: true
+      responses:
+        "201":
+          description: Beverage created successfully.
+          headers:
+            Location:
+              description: URL to the newly created beverage.
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:beverages
+      x-openapi-router-controller: swagger_server.controllers.beverage_controller
+  /beverages/{id}:
+    get:
+      tags:
+      - beverage
+      summary: Retrieve a beverage by ID
+      description: Retrieves details of a specific beverage.
+      operationId: get_beverage_by_id
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the beverage.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Beverage details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beverage'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:beverages
+      x-openapi-router-controller: swagger_server.controllers.beverage_controller
+    put:
+      tags:
+      - beverage
+      summary: Update a beverage
+      description: Create or Replace an existing beverage.
+      operationId: replace_beverage
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the beverage.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/beverages_id_body'
+        required: true
+      responses:
+        "200":
+          description: Beverage updated successfully.
+        "201":
+          description: Beverage created successfully.
+          headers:
+            Location:
+              description: URL to the newly created beverage.
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:beverages
+        - read:beverages
+      x-openapi-router-controller: swagger_server.controllers.beverage_controller
+    delete:
+      tags:
+      - beverage
+      summary: Delete a beverage
+      description: Deletes a beverage.
+      operationId: delete_beverage
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the beverage.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "204":
+          description: Beverage deleted successfully.
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:beverages
+        - read:beverages
+      x-openapi-router-controller: swagger_server.controllers.beverage_controller
+    patch:
+      tags:
+      - beverage
+      summary: Partially update a beverage
+      description: Update an existing beverage.
+      operationId: update_beverage
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the beverage.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/beverages_id_body_1'
+        required: true
+      responses:
+        "200":
+          description: Beverage updated successfully.
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:beverages
+        - read:beverages
+      x-openapi-router-controller: swagger_server.controllers.beverage_controller
+  /beverages/{id}/labels:
+    get:
+      tags:
+      - label
+      summary: Retrieve all labels
+      description: Retrieves a list of all labels.
+      operationId: get_labels
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the beverages.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: A list of labels.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Label'
+                x-content-type: application/json
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:labels
+      x-openapi-router-controller: swagger_server.controllers.label_controller
+    post:
+      tags:
+      - label
+      summary: Create a new label
+      description: Creates a new label.
+      operationId: create_label
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the beverages.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/id_labels_body'
+        required: true
+      responses:
+        "201":
+          description: Label created successfully.
+          headers:
+            Location:
+              description: URL to the newly created label.
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:labels
+        - read:labels
+      x-openapi-router-controller: swagger_server.controllers.label_controller
+  /beverages/{beverageId}/labels/{id}:
+    get:
+      tags:
+      - label
+      summary: Retrieve a label by ID and beverage ID
+      description: Retrieves details of a specific label.
+      operationId: get_label_by_id
+      parameters:
+      - name: beverageId
+        in: path
+        description: Unique identifier for the beverage.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: Unique identifier for the label.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Label details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:labels
+      x-openapi-router-controller: swagger_server.controllers.label_controller
+    put:
+      tags:
+      - label
+      summary: Update a label
+      description: Create or Replace an existing label.
+      operationId: replace_label
+      parameters:
+      - name: beverageId
+        in: path
+        description: Unique identifier for the beverage.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: Unique identifier for the label.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/labels_id_body'
+        required: true
+      responses:
+        "200":
+          description: Label updated successfully.
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:labels
+        - read:labels
+      x-openapi-router-controller: swagger_server.controllers.label_controller
+    delete:
+      tags:
+      - label
+      summary: Delete a label
+      description: Deletes a label.
+      operationId: delete_label
+      parameters:
+      - name: beverageId
+        in: path
+        description: Unique identifier for the beverage.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: Unique identifier for the label.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "204":
+          description: Label deleted successfully.
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:labels
+        - read:labels
+      x-openapi-router-controller: swagger_server.controllers.label_controller
+    patch:
+      tags:
+      - label
+      summary: Partially update a label
+      description: Update existing label.
+      operationId: update_label
+      parameters:
+      - name: beverageId
+        in: path
+        description: Unique identifier for the beverage.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: Unique identifier for the label.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/labels_id_body_1'
+        required: true
+      responses:
+        "200":
+          description: Label updated successfully.
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:labels
+        - read:labels
+      x-openapi-router-controller: swagger_server.controllers.label_controller
+  /brands:
+    get:
+      tags:
+      - brand
+      summary: Retrieve all brand
+      description: Retrieves a list of all brands.
+      operationId: get_brands
+      parameters:
+      - name: page
+        in: query
+        description: Page number.
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of items per page.
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          default: 10
+      responses:
+        "200":
+          description: A list of brands.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Brand'
+                x-content-type: application/json
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:brands
+      x-openapi-router-controller: swagger_server.controllers.brand_controller
+    post:
+      tags:
+      - brand
+      summary: Create a new brand
+      description: Creates a new brand.
+      operationId: create_brand
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/brands_body'
+        required: true
+      responses:
+        "201":
+          description: Brand created successfully.
+          headers:
+            Location:
+              description: URL to the newly created brand.
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:brands
+        - read:brands
+      x-openapi-router-controller: swagger_server.controllers.brand_controller
+  /brands/{id}:
+    get:
+      tags:
+      - brand
+      summary: Retrieve a brand by ID
+      description: Retrieves details of a specific brand.
+      operationId: get_brand_by_id
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the brand.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Brand details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brand'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:brands
+      x-openapi-router-controller: swagger_server.controllers.brand_controller
+    put:
+      tags:
+      - brand
+      summary: Update a brand
+      description: Create or replace an existing brand.
+      operationId: replace_brand
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the brand.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/brands_id_body'
+        required: true
+      responses:
+        "200":
+          description: Brand updated successfully.
+        "201":
+          description: Brand created successfully.
+          headers:
+            Location:
+              description: URL to the newly created brand.
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:brands
+        - read:brands
+      x-openapi-router-controller: swagger_server.controllers.brand_controller
+    delete:
+      tags:
+      - brand
+      summary: Delete a brand
+      description: Deletes a brand.
+      operationId: delete_brand
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the brand.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "204":
+          description: Brand deleted successfully.
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:brands
+        - read:brands
+      x-openapi-router-controller: swagger_server.controllers.brand_controller
+    patch:
+      tags:
+      - brand
+      summary: Partially update a brand
+      description: Update an existing brand.
+      operationId: update_brand
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the brand.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/brands_id_body_1'
+        required: true
+      responses:
+        "200":
+          description: Brand updated successfully.
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:brands
+        - read:brands
+      x-openapi-router-controller: swagger_server.controllers.brand_controller
+  /ingredients:
+    get:
+      tags:
+      - ingredient
+      summary: Retrieve all ingredients
+      description: Retrieves a list of all ingredients.
+      operationId: get_ingredients
+      responses:
+        "200":
+          description: A list of ingredients.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+                x-content-type: application/json
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:ingredients
+      x-openapi-router-controller: swagger_server.controllers.ingredient_controller
+    post:
+      tags:
+      - ingredient
+      summary: Create a new ingredient
+      description: Creates a new ingredient.
+      operationId: create_ingredient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ingredients_body'
+        required: true
+      responses:
+        "201":
+          description: Ingredient created successfully.
+          headers:
+            Location:
+              description: URL to the newly created ingredient.
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:ingredients
+        - read:ingredients
+      x-openapi-router-controller: swagger_server.controllers.ingredient_controller
+  /ingredients/{id}:
+    get:
+      tags:
+      - ingredient
+      summary: Retrieve an ingredient by ID
+      description: Retrieves details of a specific ingredient.
+      operationId: get_ingredient_by_id
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the ingredient.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Ingredient details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:ingredients
+      x-openapi-router-controller: swagger_server.controllers.ingredient_controller
+    put:
+      tags:
+      - ingredient
+      summary: Update an ingredient
+      description: Create or Replace an existing ingredient.
+      operationId: replace_ingredient
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the ingredient.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ingredients_id_body'
+        required: true
+      responses:
+        "200":
+          description: Ingredient updated successfully.
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:ingredients
+        - read:ingredients
+      x-openapi-router-controller: swagger_server.controllers.ingredient_controller
+    delete:
+      tags:
+      - ingredient
+      summary: Delete an ingredient
+      description: Deletes an ingredient.
+      operationId: delete_ingredient
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the ingredient.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "204":
+          description: Ingredient deleted successfully.
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:ingredients
+        - read:ingredients
+      x-openapi-router-controller: swagger_server.controllers.ingredient_controller
+    patch:
+      tags:
+      - ingredient
+      summary: Update an ingredient
+      description: Updates an existing ingredient.
+      operationId: update_ingredient
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the ingredient.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ingredients_id_body_1'
+        required: true
+      responses:
+        "200":
+          description: Ingredient updated successfully.
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:ingredients
+        - read:ingredients
+      x-openapi-router-controller: swagger_server.controllers.ingredient_controller
+  /container-types:
+    get:
+      tags:
+      - container-type
+      summary: Retrieve all container types
+      description: Retrieves a list of all container types.
+      operationId: get_container_types
+      responses:
+        "200":
+          description: A list of container types.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContainerType'
+                x-content-type: application/json
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:container-types
+      x-openapi-router-controller: swagger_server.controllers.container_type_controller
+    post:
+      tags:
+      - container-type
+      summary: Create a new container type
+      description: Creates a new container type.
+      operationId: create_container_type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/containertypes_body'
+        required: true
+      responses:
+        "201":
+          description: Container type created successfully.
+          headers:
+            Location:
+              description: URL to the newly created container type.
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:container-types
+        - read:container-types
+      x-openapi-router-controller: swagger_server.controllers.container_type_controller
+  /container-types/{id}:
+    get:
+      tags:
+      - container-type
+      summary: Retrieve a container type by ID
+      description: Retrieves details of a specific container type.
+      operationId: get_container_type_by_id
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the container type.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Container type details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContainerType'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - read:container-types
+      x-openapi-router-controller: swagger_server.controllers.container_type_controller
+    put:
+      tags:
+      - container-type
+      summary: Update a container type
+      description: Create or replace a container type.
+      operationId: put_container_type
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the container type.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/containertypes_id_body'
+        required: true
+      responses:
+        "200":
+          description: Container type updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:container-types
+        - read:container-types
+      x-openapi-router-controller: swagger_server.controllers.container_type_controller
+    delete:
+      tags:
+      - container-type
+      summary: Delete a container type
+      description: Deletes a container type.
+      operationId: delete_container_type
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the container type.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "204":
+          description: Container type deleted successfully.
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:container-types
+        - read:container-types
+      x-openapi-router-controller: swagger_server.controllers.container_type_controller
+    patch:
+      tags:
+      - container-type
+      summary: Update a container type
+      description: Updates an existing container type.
+      operationId: update_container_type
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for the container type.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/containertypes_id_body_1'
+        required: true
+      responses:
+        "200":
+          description: Container type updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Access forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth:
+        - write:container-types
+        - read:container-types
+      x-openapi-router-controller: swagger_server.controllers.container_type_controller
+components:
+  schemas:
+    Beverage:
+      required:
+      - brandId
+      - containerTypeId
+      - id
+      - labelId
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the beverage.
+          format: uuid
+        brandId:
+          type: string
+          description: ID of the brand associated with the beverage
+          format: uuid
+        description:
+          type: string
+          description: Detailed description of the beverage.
+        labelId:
+          type: string
+          description: Unique identifier of the associated label.
+          format: uuid
+        containerTypeId:
+          type: string
+          description: Unique identifier of the container type.
+          format: uuid
+        ingredients:
+          type: array
+          description: List of ingredient IDs.
+          items:
+            type: string
+            format: uuid
+      example:
+        labelId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        containerTypeId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        brandId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        description: description
+        ingredients:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+    Brand:
+      required:
+      - brandId
+      - brandName
+      type: object
+      properties:
+        brandId:
+          type: string
+          description: Unique identifier for the brand
+          format: uuid
+        brandName:
+          type: string
+          description: Name of the brand
+        brandDescription:
+          type: string
+          description: Description of the brand
+      example:
+        brandName: brandName
+        brandDescription: brandDescription
+        brandId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+    Label:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the label.
+          format: uuid
+        name:
+          type: string
+          description: Name of the label.
+        description:
+          type: string
+          description: Detailed description of the label.
+      example:
+        name: name
+        description: description
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+    Ingredient:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the ingredient.
+          format: uuid
+        name:
+          type: string
+          description: Name of the ingredient.
+        allergenInfo:
+          type: string
+          description: Allergen information.
+      example:
+        name: name
+        allergenInfo: allergenInfo
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+    ContainerType:
+      required:
+      - id
+      - type
+      - volume
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the container type.
+          format: uuid
+        type:
+          type: string
+          description: "Type of container (e.g., Bottle, Can)."
+        volume:
+          type: integer
+          description: Volume in milliliters.
+      example:
+        volume: 0
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: type
+    PaginationLinks:
+      required:
+      - href
+      - rel
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Relationship type
+          enum:
+          - self
+          - next
+          - prev
+          - first
+          - last
+        href:
+          type: string
+          description: Hyperlink reference.
+      example:
+        rel: self
+        href: href
+    BeverageLinks:
+      required:
+      - href
+      - rel
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Relationship type
+          enum:
+          - self
+          - labels
+          - ingredients
+          - containers
+        href:
+          type: string
+          description: Hyperlink reference.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorResponse_error'
+    inline_response_200:
+      type: object
+      properties:
+        beverages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Beverage'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaginationLinks'
+      example:
+        beverages:
+        - labelId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          containerTypeId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          brandId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          description: description
+          ingredients:
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - labelId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          containerTypeId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          brandId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          description: description
+          ingredients:
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        links:
+        - rel: self
+          href: href
+        - rel: self
+          href: href
+    beverages_body:
+      required:
+      - brandId
+      - containerTypeId
+      - labelId
+      type: object
+      properties:
+        description:
+          type: string
+        brandId:
+          type: string
+          format: uuid
+        labelId:
+          type: string
+          format: uuid
+        containerTypeId:
+          type: string
+          format: uuid
+        ingredients:
+          type: array
+          items:
+            type: string
+            format: uuid
+    beverages_id_body:
+      required:
+      - brandId
+      - containerTypeId
+      - labelId
+      type: object
+      properties:
+        description:
+          type: string
+        brandId:
+          type: string
+          format: uuid
+        labelId:
+          type: string
+          format: uuid
+        containerTypeId:
+          type: string
+          format: uuid
+        ingredients:
+          type: array
+          items:
+            type: string
+            format: uuid
+    beverages_id_body_1:
+      type: object
+      properties:
+        description:
+          type: string
+        brandId:
+          type: string
+          format: uuid
+        labelId:
+          type: string
+          format: uuid
+        containerTypeId:
+          type: string
+          format: uuid
+        ingredients:
+          type: array
+          items:
+            type: string
+            format: uuid
+    id_labels_body:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    labels_id_body:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    labels_id_body_1:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    brands_body:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    brands_id_body:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    brands_id_body_1:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    ingredients_body:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        allergen_info:
+          type: string
+    ingredients_id_body:
+      type: object
+      properties:
+        name:
+          type: string
+        allergen_info:
+          type: string
+    ingredients_id_body_1:
+      type: object
+      properties:
+        name:
+          type: string
+        allergen_info:
+          type: string
+    containertypes_body:
+      required:
+      - type
+      - volume
+      type: object
+      properties:
+        type:
+          type: string
+        volume:
+          type: number
+          format: float
+    containertypes_id_body:
+      required:
+      - type
+      - volume
+      type: object
+      properties:
+        type:
+          type: string
+        volume:
+          type: number
+          format: float
+    inline_response_200_1:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+    containertypes_id_body_1:
+      type: object
+      properties:
+        type:
+          type: string
+        volume:
+          type: number
+          format: float
+    ErrorResponse_error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP status code.
+        message:
+          type: string
+          description: Error message.
+  responses:
+    UnauthorizedError:
+      description: Authentication failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Invalid request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ForbiddenError:
+      description: Access forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: swagger_server.controllers.authorization_controller.check_BearerAuth
+
