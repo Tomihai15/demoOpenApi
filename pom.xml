@@ -103,8 +103,8 @@
 							<language>spring</language>
 							<output>${project.basedir}</output>
 							<generateSupportingFiles>false</generateSupportingFiles>
-							<apiPackage>generated.api</apiPackage>
-							<modelPackage>generated.model</modelPackage>
+							<apiPackage>com.example.demo.generated.api</apiPackage>
+							<modelPackage>com.example.demo.generated.model</modelPackage>
 							<!--							<configOptions>-->
 							<!--								<interfaceOnly>true</interfaceOnly>-->
 							<!--							</configOptions>-->

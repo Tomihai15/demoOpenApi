@@ -23,17 +23,28 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.List;
+import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-23T23:06:47.905007700+03:00[Europe/Bucharest]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-30T11:22:53.044021+02:00[Europe/Bucharest]")
 @Validated
 public interface BeveragesApi {
 
@@ -97,10 +108,10 @@ public interface BeveragesApi {
         @ApiResponse(responseCode = "403", description = "Access forbidden.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
         
         @ApiResponse(responseCode = "404", description = "Resource not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
-    @RequestMapping(value = "/beverages/{id}/labels/{id}",
+    @RequestMapping(value = "/beverages/{beverageId}/labels/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteLabel(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the label.", required=true, schema=@Schema()) @PathVariable("id") UUID id);
+    ResponseEntity<Void> deleteLabel(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the beverage.", required=true, schema=@Schema()) @PathVariable("beverageId") UUID beverageId, @Parameter(in = ParameterIn.PATH, description = "Unique identifier for the label.", required=true, schema=@Schema()) @PathVariable("id") UUID id);
 
 
     @Operation(summary = "Retrieve a beverage by ID", description = "Retrieves details of a specific beverage.", security = {
@@ -133,7 +144,7 @@ public interface BeveragesApi {
 , defaultValue="10")) @Valid @RequestParam(value = "per_page", required = false, defaultValue="10") Integer perPage);
 
 
-    @Operation(summary = "Retrieve a label by ID", description = "Retrieves details of a specific label.", security = {
+    @Operation(summary = "Retrieve a label by ID and beverage ID", description = "Retrieves details of a specific label.", security = {
         @SecurityRequirement(name = "BearerAuth")    }, tags={ "label" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Label details.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Label.class))),
@@ -141,10 +152,10 @@ public interface BeveragesApi {
         @ApiResponse(responseCode = "401", description = "Authentication failed.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
         
         @ApiResponse(responseCode = "404", description = "Resource not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
-    @RequestMapping(value = "/beverages/{id}/labels/{id}",
+    @RequestMapping(value = "/beverages/{beverageId}/labels/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Label> getLabelById(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the label.", required=true, schema=@Schema()) @PathVariable("id") UUID id);
+    ResponseEntity<Label> getLabelById(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the beverage.", required=true, schema=@Schema()) @PathVariable("beverageId") UUID beverageId, @Parameter(in = ParameterIn.PATH, description = "Unique identifier for the label.", required=true, schema=@Schema()) @PathVariable("id") UUID id);
 
 
     @Operation(summary = "Retrieve all labels", description = "Retrieves a list of all labels.", security = {
@@ -192,11 +203,11 @@ public interface BeveragesApi {
         @ApiResponse(responseCode = "403", description = "Access forbidden.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
         
         @ApiResponse(responseCode = "404", description = "Resource not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
-    @RequestMapping(value = "/beverages/{id}/labels/{id}",
+    @RequestMapping(value = "/beverages/{beverageId}/labels/{id}",
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<InlineResponse201> replaceLabel(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the label.", required=true, schema=@Schema()) @PathVariable("id") UUID id, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody LabelsIdBody body);
+    ResponseEntity<InlineResponse201> replaceLabel(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the beverage.", required=true, schema=@Schema()) @PathVariable("beverageId") UUID beverageId, @Parameter(in = ParameterIn.PATH, description = "Unique identifier for the label.", required=true, schema=@Schema()) @PathVariable("id") UUID id, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody LabelsIdBody body);
 
 
     @Operation(summary = "Partially update a beverage", description = "Update an existing beverage.", security = {
@@ -228,11 +239,11 @@ public interface BeveragesApi {
         @ApiResponse(responseCode = "403", description = "Access forbidden.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
         
         @ApiResponse(responseCode = "404", description = "Resource not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
-    @RequestMapping(value = "/beverages/{id}/labels/{id}",
+    @RequestMapping(value = "/beverages/{beverageId}/labels/{id}",
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.PATCH)
-    ResponseEntity<InlineResponse201> updateLabel(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the label.", required=true, schema=@Schema()) @PathVariable("id") UUID id, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody LabelsIdBody1 body);
+    ResponseEntity<InlineResponse201> updateLabel(@Parameter(in = ParameterIn.PATH, description = "Unique identifier for the beverage.", required=true, schema=@Schema()) @PathVariable("beverageId") UUID beverageId, @Parameter(in = ParameterIn.PATH, description = "Unique identifier for the label.", required=true, schema=@Schema()) @PathVariable("id") UUID id, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody LabelsIdBody1 body);
 
 }
 

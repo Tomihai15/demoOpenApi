@@ -1,5 +1,6 @@
 package com.example.demo.generated.api;
 
+import com.example.demo.generated.model.ErrorResponse;
 import com.example.demo.generated.model.Ingredient;
 import com.example.demo.generated.model.IngredientsBody;
 import com.example.demo.generated.model.IngredientsIdBody;
@@ -8,22 +9,37 @@ import com.example.demo.generated.model.InlineResponse2003;
 import com.example.demo.generated.model.InlineResponse201;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-23T23:06:47.905007700+03:00[Europe/Bucharest]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-30T11:22:53.044021+02:00[Europe/Bucharest]")
 @RestController
 public class IngredientsApiController implements IngredientsApi {
 
@@ -43,7 +59,7 @@ public class IngredientsApiController implements IngredientsApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<InlineResponse201>(objectMapper.readValue("{\r\n  \"links\" : [ {\r\n    \"method\" : \"method\",\r\n    \"rel\" : \"rel\",\r\n    \"href\" : \"href\"\r\n  }, {\r\n    \"method\" : \"method\",\r\n    \"rel\" : \"rel\",\r\n    \"href\" : \"href\"\r\n  } ],\r\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\r\n}", InlineResponse201.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<InlineResponse201>(objectMapper.readValue("{\n  \"links\" : [ {\n    \"method\" : \"method\",\n    \"rel\" : \"rel\",\n    \"href\" : \"href\"\n  }, {\n    \"method\" : \"method\",\n    \"rel\" : \"rel\",\n    \"href\" : \"href\"\n  } ],\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n}", InlineResponse201.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<InlineResponse201>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -62,7 +78,7 @@ public class IngredientsApiController implements IngredientsApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Ingredient>(objectMapper.readValue("{\r\n  \"name\" : \"name\",\r\n  \"allergenInfo\" : \"allergenInfo\",\r\n  \"links\" : [ {\r\n    \"method\" : \"method\",\r\n    \"rel\" : \"rel\",\r\n    \"href\" : \"href\"\r\n  }, {\r\n    \"method\" : \"method\",\r\n    \"rel\" : \"rel\",\r\n    \"href\" : \"href\"\r\n  } ],\r\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\r\n}", Ingredient.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Ingredient>(objectMapper.readValue("{\n  \"name\" : \"name\",\n  \"allergenInfo\" : \"allergenInfo\",\n  \"links\" : [ {\n    \"method\" : \"method\",\n    \"rel\" : \"rel\",\n    \"href\" : \"href\"\n  }, {\n    \"method\" : \"method\",\n    \"rel\" : \"rel\",\n    \"href\" : \"href\"\n  } ],\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n}", Ingredient.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Ingredient>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -76,7 +92,7 @@ public class IngredientsApiController implements IngredientsApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<InlineResponse2003>(objectMapper.readValue("{\r\n  \"ingredients\" : [ {\r\n    \"name\" : \"name\",\r\n    \"allergenInfo\" : \"allergenInfo\",\r\n    \"links\" : [ {\r\n      \"method\" : \"method\",\r\n      \"rel\" : \"rel\",\r\n      \"href\" : \"href\"\r\n    }, {\r\n      \"method\" : \"method\",\r\n      \"rel\" : \"rel\",\r\n      \"href\" : \"href\"\r\n    } ],\r\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\r\n  }, {\r\n    \"name\" : \"name\",\r\n    \"allergenInfo\" : \"allergenInfo\",\r\n    \"links\" : [ {\r\n      \"method\" : \"method\",\r\n      \"rel\" : \"rel\",\r\n      \"href\" : \"href\"\r\n    }, {\r\n      \"method\" : \"method\",\r\n      \"rel\" : \"rel\",\r\n      \"href\" : \"href\"\r\n    } ],\r\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\r\n  } ],\r\n  \"links\" : [ null, null ]\r\n}", InlineResponse2003.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<InlineResponse2003>(objectMapper.readValue("{\n  \"ingredients\" : [ {\n    \"name\" : \"name\",\n    \"allergenInfo\" : \"allergenInfo\",\n    \"links\" : [ {\n      \"method\" : \"method\",\n      \"rel\" : \"rel\",\n      \"href\" : \"href\"\n    }, {\n      \"method\" : \"method\",\n      \"rel\" : \"rel\",\n      \"href\" : \"href\"\n    } ],\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n  }, {\n    \"name\" : \"name\",\n    \"allergenInfo\" : \"allergenInfo\",\n    \"links\" : [ {\n      \"method\" : \"method\",\n      \"rel\" : \"rel\",\n      \"href\" : \"href\"\n    }, {\n      \"method\" : \"method\",\n      \"rel\" : \"rel\",\n      \"href\" : \"href\"\n    } ],\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n  } ],\n  \"links\" : [ null, null ]\n}", InlineResponse2003.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<InlineResponse2003>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -90,7 +106,7 @@ public class IngredientsApiController implements IngredientsApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<InlineResponse201>(objectMapper.readValue("{\r\n  \"links\" : [ {\r\n    \"method\" : \"method\",\r\n    \"rel\" : \"rel\",\r\n    \"href\" : \"href\"\r\n  }, {\r\n    \"method\" : \"method\",\r\n    \"rel\" : \"rel\",\r\n    \"href\" : \"href\"\r\n  } ],\r\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\r\n}", InlineResponse201.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<InlineResponse201>(objectMapper.readValue("{\n  \"links\" : [ {\n    \"method\" : \"method\",\n    \"rel\" : \"rel\",\n    \"href\" : \"href\"\n  }, {\n    \"method\" : \"method\",\n    \"rel\" : \"rel\",\n    \"href\" : \"href\"\n  } ],\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n}", InlineResponse201.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<InlineResponse201>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -104,7 +120,7 @@ public class IngredientsApiController implements IngredientsApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<InlineResponse201>(objectMapper.readValue("{\r\n  \"links\" : [ {\r\n    \"method\" : \"method\",\r\n    \"rel\" : \"rel\",\r\n    \"href\" : \"href\"\r\n  }, {\r\n    \"method\" : \"method\",\r\n    \"rel\" : \"rel\",\r\n    \"href\" : \"href\"\r\n  } ],\r\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\r\n}", InlineResponse201.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<InlineResponse201>(objectMapper.readValue("{\n  \"links\" : [ {\n    \"method\" : \"method\",\n    \"rel\" : \"rel\",\n    \"href\" : \"href\"\n  }, {\n    \"method\" : \"method\",\n    \"rel\" : \"rel\",\n    \"href\" : \"href\"\n  } ],\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n}", InlineResponse201.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<InlineResponse201>(HttpStatus.INTERNAL_SERVER_ERROR);
