@@ -663,12 +663,12 @@
         }
       }
     },
-    "/beverages/{id}/labels/{id}": {
+    "/beverages/{beverageId}/labels/{id}": {
       "get": {
         "tags": [
           "label"
         ],
-        "summary": "Retrieve a label by ID",
+        "summary": "Retrieve a label by ID and beverage ID",
         "description": "Retrieves details of a specific label.",
         "operationId": "getLabelById",
         "security": [
@@ -679,6 +679,16 @@
           }
         ],
         "parameters": [
+          {
+            "in": "path",
+            "name": "beverageId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "Unique identifier for the beverage."
+          },
           {
             "in": "path",
             "name": "id",
@@ -725,6 +735,16 @@
           }
         ],
         "parameters": [
+          {
+            "in": "path",
+            "name": "beverageId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "Unique identifier for the beverage."
+          },
           {
             "in": "path",
             "name": "id",
@@ -809,6 +829,16 @@
         "parameters": [
           {
             "in": "path",
+            "name": "beverageId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "Unique identifier for the beverage."
+          },
+          {
+            "in": "path",
             "name": "id",
             "schema": {
               "type": "string",
@@ -889,6 +919,16 @@
           }
         ],
         "parameters": [
+          {
+            "in": "path",
+            "name": "beverageId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "Unique identifier for the beverage."
+          },
           {
             "in": "path",
             "name": "id",
