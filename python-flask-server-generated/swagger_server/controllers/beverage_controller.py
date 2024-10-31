@@ -1,7 +1,7 @@
 import connexion
 import six
 
-from swagger_server.mocks.beverage import get_mock_beverage_by_id
+from swagger_server.mocks.beverage import get_mock_beverage_by_id, get_mock_beverage_list
 from swagger_server.models.beverage import Beverage  # noqa: E501
 from swagger_server.models.beverages_body import BeveragesBody  # noqa: E501
 from swagger_server.models.beverages_id_body import BeveragesIdBody  # noqa: E501
@@ -64,7 +64,7 @@ def get_beverages(page=None, per_page=None):  # noqa: E501
 
     :rtype: InlineResponse200
     """
-    return 'do some magic!'
+    return get_mock_beverage_list()
 
 
 def replace_beverage(body, id):  # noqa: E501

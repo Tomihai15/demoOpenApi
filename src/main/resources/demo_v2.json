@@ -1867,6 +1867,12 @@
               "format": "uuid"
             },
             "description": "List of ingredient IDs."
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BeverageLinks"
+            }
           }
         },
         "required": [

@@ -9,6 +9,8 @@ def main():
     app = connexion.App(__name__, specification_dir='./swagger/')
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('swagger.yaml', arguments={'title': 'Beverage E-commerce API'}, pythonic_params=True)
+    from flask_cors import CORS
+    CORS(app.app)
     app.run(port=8080)
 
 

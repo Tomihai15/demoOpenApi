@@ -6,6 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
+from swagger_server.models.beverage_links import BeverageLinks  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -14,7 +15,7 @@ class Beverage(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: str=None, brand_id: str=None, description: str=None, label_id: str=None, container_type_id: str=None, ingredients: List[str]=None):  # noqa: E501
+    def __init__(self, id: str=None, brand_id: str=None, description: str=None, label_id: str=None, container_type_id: str=None, ingredients: List[str]=None, links: List[BeverageLinks]=None):  # noqa: E501
         """Beverage - a model defined in Swagger
 
         :param id: The id of this Beverage.  # noqa: E501
@@ -29,6 +30,8 @@ class Beverage(Model):
         :type container_type_id: str
         :param ingredients: The ingredients of this Beverage.  # noqa: E501
         :type ingredients: List[str]
+        :param links: The links of this Beverage.  # noqa: E501
+        :type links: List[BeverageLinks]
         """
         self.swagger_types = {
             'id': str,
@@ -36,7 +39,8 @@ class Beverage(Model):
             'description': str,
             'label_id': str,
             'container_type_id': str,
-            'ingredients': List[str]
+            'ingredients': List[str],
+            'links': List[BeverageLinks]
         }
 
         self.attribute_map = {
@@ -45,7 +49,8 @@ class Beverage(Model):
             'description': 'description',
             'label_id': 'labelId',
             'container_type_id': 'containerTypeId',
-            'ingredients': 'ingredients'
+            'ingredients': 'ingredients',
+            'links': 'links'
         }
         self._id = id
         self._brand_id = brand_id
@@ -53,6 +58,7 @@ class Beverage(Model):
         self._label_id = label_id
         self._container_type_id = container_type_id
         self._ingredients = ingredients
+        self._links = links
 
     @classmethod
     def from_dict(cls, dikt) -> 'Beverage':
@@ -210,3 +216,24 @@ class Beverage(Model):
         """
 
         self._ingredients = ingredients
+
+    @property
+    def links(self) -> List[BeverageLinks]:
+        """Gets the links of this Beverage.
+
+
+        :return: The links of this Beverage.
+        :rtype: List[BeverageLinks]
+        """
+        return self._links
+
+    @links.setter
+    def links(self, links: List[BeverageLinks]):
+        """Sets the links of this Beverage.
+
+
+        :param links: The links of this Beverage.
+        :type links: List[BeverageLinks]
+        """
+
+        self._links = links
